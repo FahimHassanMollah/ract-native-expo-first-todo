@@ -6,6 +6,8 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { createHomeStyles } from "@/assets/styles/home.styles";
 import { LinearGradient } from 'expo-linear-gradient';
+import Header from "@/components/header";
+import TodoInput from "@/components/todoInput";
 
 const index = () => {
   const { toggleDarkMode, colors } = useTheme();
@@ -32,7 +34,8 @@ const index = () => {
     <LinearGradient colors={colors.gradients.background} style={homeStyles.container}  >
        <SafeAreaView style={homeStyles.safeArea}>
       <View>
-        <Text>indexs</Text>
+        <Header />
+        <TodoInput />
         <Pressable
          style={style.button}
           onPress={() => {
