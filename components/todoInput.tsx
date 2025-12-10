@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { api } from '@/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
@@ -14,8 +14,15 @@ const todoInput = () => {
     const addTodo = useMutation(api.todos.addTodo);
     const [newTodo, setNewTodo] = React.useState("");
 
-    const handleAddTodo = async (newTodo: string) => {
-        await addTodo({ text: newTodo });
+    const handleAddTodo = async () => {
+        try {
+            if (newTodo.trim()) {
+                await addTodo({ text: newTodo.trim() });
+                setNewTodo("");
+            }
+        } catch (error) {
+            Alert.alert("Error", "Could not add todo. Please try again.");
+        }
     };
 
     return (
@@ -27,9 +34,9 @@ const todoInput = () => {
                     placeholderTextColor={colors.textMuted}
                     value={newTodo}
                     onChangeText={setNewTodo}
-                    onSubmitEditing={() => handleAddTodo(newTodo)}
+                    onSubmitEditing={() => handleAddTodo()}
                 />
-                <TouchableOpacity onPress={() => handleAddTodo(newTodo)} activeOpacity={0.8} disabled={!newTodo.trim()}>
+                <TouchableOpacity onPress={() => handleAddTodo()} activeOpacity={0.8} disabled={!newTodo.trim()}>
                     <LinearGradient
                         colors={newTodo.trim() ? colors.gradients.primary : colors.gradients.muted}
                         style={[homeStyles.addButton, !newTodo.trim() && homeStyles.addButtonDisabled]}
